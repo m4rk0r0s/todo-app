@@ -1,0 +1,10 @@
+spring:
+  h2.console:
+    enabled: false
+  datasource:
+    url: 'jdbc:h2:mem:spring-boot-h2-db'
+    username: 'sa'
+    password:
+  jpa.hibernate:
+    ddl-auto: validate
+task.allowMultipleTasksFromTemplate: false

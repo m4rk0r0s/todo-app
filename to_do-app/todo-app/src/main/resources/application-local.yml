@@ -1,0 +1,14 @@
+spring:
+  h2.console:
+    enabled: true
+    path: '/console'
+  datasource:
+    url: 'jdbc:h2:file:C:\Users\Grzegorz\Desktop\Sp\to_do-app\todo-app\todo-db'
+    username: 'sa'
+    password:
+  jpa:
+   hibernate:
+    ddl-auto: validate
+   show-sql: true
+
+
