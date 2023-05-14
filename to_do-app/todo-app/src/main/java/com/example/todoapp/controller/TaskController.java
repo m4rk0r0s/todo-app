@@ -36,13 +36,11 @@ class TaskController {
         return ResponseEntity.ok(repository.findAll(page).getContent());
     }
 
-    @PutMapping("/tasks/{id}")
-    ResponseEntity<List<Task>> updateTask(@PathVariable int id, @RequestBody @Valid Task toUpdate) {
-        if (!repository.existsById(id)) {
-            return ResponseEntity.notFound().build();
-        }
-        repository.save(toUpdate);
-        return ResponseEntity.noContent().build();
+
+    @PostMapping("/tasks")
+    ResponseEntity<Task> creatTask(@RequestBody @Valid Task toCreate) {
+        Task result = repository.save(toCreate);
+        return ResponseEntity.created(URI.create("/" + result.getId())).build();
     }
 
     @GetMapping("/tasks/{id}")
@@ -51,13 +49,18 @@ class TaskController {
                 .map(task -> ResponseEntity.ok(task))
                 .orElse(ResponseEntity.notFound().build());
     }
-
-    @PostMapping("/tasks")
-    ResponseEntity<Task> creatTask(@RequestBody @Valid Task toCreate) {
-        Task result = repository.save(toCreate);
-        return ResponseEntity.created(URI.create("/" + result.getId())).build();
+    @PutMapping("/tasks/{id}")
+    ResponseEntity<List<Task>> updateTask(@PathVariable int id, @RequestBody @Valid Task toUpdate) {
+        if (!repository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+        repository.findById(id)
+                .ifPresent(task -> {
+                    task.updateFrom(toUpdate);
+                    repository.save(task);
+                });
+        return ResponseEntity.noContent().build();
     }
-
     @Transactional
     @PatchMapping("/tasks/{id}")
     public ResponseEntity<List<Task>> toggleTask(@PathVariable int id) {
