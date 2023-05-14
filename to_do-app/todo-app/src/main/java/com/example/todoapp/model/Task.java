@@ -4,6 +4,8 @@ package com.example.todoapp.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "tasks")
 public class Task {
@@ -17,7 +19,6 @@ public class Task {
     @NotBlank(message = "tasks descriptions can't be empty")
     private String descriptions;
     private boolean done;
-
 
     public int getId() {
         return id;
